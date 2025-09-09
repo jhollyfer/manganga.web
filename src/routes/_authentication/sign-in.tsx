@@ -66,6 +66,9 @@ function RouteComponent() {
       router.navigate({
         to: "/dashboard",
         replace: true,
+        search: {
+          search: undefined,
+        },
       });
     },
   });

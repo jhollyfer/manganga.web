@@ -62,7 +62,12 @@ export function Sidebar() {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link to="/dashboard">
+              <Link
+                to="/dashboard"
+                search={{
+                  search: undefined,
+                }}
+              >
                 <Rotate3dIcon className="size-5" />
                 <span className="text-base font-semibold">MANGANGÁ</span>
               </Link>

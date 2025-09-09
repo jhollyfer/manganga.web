@@ -11,8 +11,6 @@ export const Route = createFileRoute("/_private")({
   component: RouteComponent,
   validateSearch: (params: SearchProps) => {
     return {
-      page: Number(params.page ?? 1),
-      perPage: Number(params?.perPage ?? 50),
       search: params?.search,
     };
   },

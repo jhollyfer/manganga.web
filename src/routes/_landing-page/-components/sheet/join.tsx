@@ -27,7 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { API } from "@/lib/api";
 import { Formatter } from "@/lib/formatter";
-import type { Address, Responsible } from "@/lib/model";
+import type { Responsible } from "@/lib/model";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -38,12 +38,10 @@ import { toast } from "sonner";
 
 interface Payload {
   name: string;
-  cpf: string;
-  rg: string | null;
+  document: string;
   birthDate: string;
   category: string;
   extras: string | null;
-  address: Pick<Address, "street" | "number" | "complement" | "neighborhood">;
   responsible: Pick<Responsible, "mother" | "father">;
 }
 
@@ -72,15 +70,9 @@ export function JoinSheet() {
   const onJoin = form.handleSubmit(function (payload) {
     create.mutateAsync({
       ...payload,
-      cpf: Formatter.number(payload.cpf),
-      rg: payload.rg || null,
+      document: Formatter.number(payload.document),
       birthDate: format(payload.birthDate, "yyyy-MM-dd"),
       extras: payload.extras || null,
-      address: {
-        ...payload.address,
-        number: payload.address.number || null,
-        complement: payload.address.complement || null,
-      },
       responsible: {
         ...payload.responsible,
         father: payload.responsible.father || null,
@@ -136,43 +128,13 @@ export function JoinSheet() {
 
             <FormField
               control={form.control}
-              name="cpf"
-              rules={{
-                validate: (value) => {
-                  if (!value) return "CPF é obrigatório";
-                  return true;
-                },
-              }}
+              name="document"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="data-[error=true]:text-destructive">
-                    CPF
-                    <span className="text-destructive/80">(obrigatório)</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="bg-background h-10"
-                      placeholder="000.000.000-00"
-                      onChange={(e) => {
-                        field.onChange(Formatter.cpf(e.target.value));
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-right text-destructive" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="rg"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="data-[error=true]:text-destructive">
-                    RG
+                    RG/CPF
                     <span className="text-muted-foreground/80">
-                      (opcional, somente números)
+                      (somente números)
                     </span>
                   </FormLabel>
                   <FormControl>
