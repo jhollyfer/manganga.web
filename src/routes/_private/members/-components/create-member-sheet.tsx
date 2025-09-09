@@ -90,8 +90,9 @@ export function CreateMemberSheet() {
         };
 
         if (data.code === 409 && data.cause === "MEMBER_ALREADY_EXISTS") {
-          form.setError("rg", {
-            message: "Os dados do membro com este RG já foram cadastrados.",
+          form.setError("document", {
+            message:
+              "Os dados do membro com este Documento já foram cadastrados.",
           });
           // toast("Membro já cadastrado!", {
           //   className: "!bg-primary !text-primary-foreground !border-primary",
