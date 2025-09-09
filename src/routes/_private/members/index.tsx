@@ -107,7 +107,7 @@ function RouteComponent() {
     },
   });
 
-  const headers = ["Nome", "CPF", "RG", "Categoria"];
+  const headers = ["Nome", "CPF/RG", "Categoria"];
 
   return (
     <div className="flex flex-col h-full overflow-hidden">

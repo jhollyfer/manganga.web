@@ -27,7 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { API } from "@/lib/api";
 import { Formatter } from "@/lib/formatter";
-import type { Address, Member, Responsible } from "@/lib/model";
+import type { Member, Responsible } from "@/lib/model";
 import { cn } from "@/lib/utils";
 import { QueryClient } from "@/query-client";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -39,15 +39,10 @@ import { toast } from "sonner";
 
 interface Payload {
   name: string;
-  cpf: string | null;
-  rg: string;
+  document: string;
   birthDate: string;
   role: string;
   extras: string | null;
-  address: Pick<
-    Address,
-    "street" | "number" | "complement" | "neighborhood"
-  > | null;
   responsible: Pick<Responsible, "mother" | "father">;
 }
 
@@ -86,6 +81,10 @@ export function UpdateMemberSheet({ memberId }: { memberId: string }) {
         ],
       });
 
+      QueryClient.invalidateQueries({
+        queryKey: ["MEMBER-GET-BY-ID", memberId],
+      });
+
       setOpen(false);
       form.reset();
       toast("Membro atualizado com sucesso!", {
@@ -100,23 +99,13 @@ export function UpdateMemberSheet({ memberId }: { memberId: string }) {
   const onSubmit = form.handleSubmit(function (payload) {
     update.mutateAsync({
       ...payload,
-      cpf: payload.cpf ? Formatter.number(payload.cpf) : null,
-      rg: Formatter.number(payload.rg),
+      document: Formatter.number(payload.document),
       birthDate: String(payload.birthDate)?.split("/").reverse().join("-"),
       extras: payload.extras || null,
       responsible: {
         ...payload.responsible,
         father: payload.responsible.father || null,
       },
-      ...(payload.address && {
-        address: {
-          ...payload.address,
-          number: payload.address.number || null,
-          complement: payload.address.complement || null,
-          neighborhood: payload.address.neighborhood || null,
-          street: payload.address.street || null,
-        },
-      }),
     });
   });
 
@@ -173,46 +162,18 @@ export function UpdateMemberSheet({ memberId }: { memberId: string }) {
 
               <FormField
                 control={form.control}
-                name="cpf"
-                defaultValue={response.data?.cpf}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="data-[error=true]:text-destructive">
-                      CPF
-                      <span className="text-muted-foreground/80">
-                        (opcional)
-                      </span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className="bg-background h-10"
-                        placeholder="000.000.000-00"
-                        onChange={(e) => {
-                          field.onChange(Formatter.cpf(e.target.value));
-                        }}
-                        autoComplete="off"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right text-destructive" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="rg"
-                defaultValue={response.data?.rg}
+                name="document"
+                defaultValue={response.data?.document}
                 rules={{
                   validate: (value) => {
-                    if (!value) return "Nome é obrigatório";
+                    if (!value) return "Documento é obrigatório";
                     return true;
                   },
                 }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="data-[error=true]:text-destructive">
-                      RG
+                      RG/CPF
                       <span className="text-destructive/80">
                         (obrigatório, somente números)
                       </span>
@@ -366,99 +327,6 @@ export function UpdateMemberSheet({ memberId }: { memberId: string }) {
                   </FormItem>
                 )}
               />
-
-              <div className="space-y-2">
-                <h3 className="text-md font-medium">Endereço</h3>
-
-                <FormField
-                  control={form.control}
-                  name="address.street"
-                  defaultValue={response.data?.user?.address?.street}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Rua
-                        <span className="text-muted-foreground/80">
-                          (opcional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="" {...field} autoComplete="off" />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address.number"
-                  defaultValue={response.data?.user?.address?.number}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Número
-                        <span className="text-muted-foreground/80">
-                          (opcional)
-                        </span>
-                        {/* <span className="text-destructive">*</span> */}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="0000"
-                          {...field}
-                          autoComplete="off"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address.neighborhood"
-                  defaultValue={response.data?.user?.address?.neighborhood}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Bairro
-                        <span className="text-muted-foreground/80">
-                          (opcional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="" {...field} autoComplete="off" />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address.complement"
-                  defaultValue={response.data?.user?.address?.complement}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Complemento
-                        <span className="text-muted-foreground/80">
-                          (opcional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Apartamento, bloco..."
-                          {...field}
-                          autoComplete="off"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
               <div className="space-y-2">
                 <h3 className="text-md font-medium">Filiação</h3>

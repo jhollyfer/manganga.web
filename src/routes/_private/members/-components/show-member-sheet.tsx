@@ -92,38 +92,12 @@ export function ShowMemberSheet({ memberId }: { memberId: string }) {
 
               <FormField
                 control={form.control}
-                name="cpf"
-                defaultValue={
-                  response.data?.cpf
-                    ? Formatter.cpf(response.data?.cpf)
-                    : undefined
-                }
+                name="document"
+                defaultValue={response.data?.document}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="data-[error=true]:text-destructive">
-                      CPF
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled
-                        className="bg-background h-10"
-                        placeholder="000.000.000-00"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right text-destructive" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="rg"
-                defaultValue={response.data?.rg}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="data-[error=true]:text-destructive">
-                      RG
+                      RG/CPF
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -262,82 +236,6 @@ export function ShowMemberSheet({ memberId }: { memberId: string }) {
                   </FormItem>
                 )}
               />
-
-              <div className="space-y-2">
-                <h3 className="text-md font-medium">Endereço</h3>
-
-                <FormField
-                  control={form.control}
-                  defaultValue={response.data?.user?.address?.street}
-                  name="address.street"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Rua
-                      </FormLabel>
-                      <FormControl>
-                        <Input disabled placeholder="" {...field} />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address.number"
-                  defaultValue={response.data?.user?.address?.number}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Número
-                      </FormLabel>
-                      <FormControl>
-                        <Input disabled placeholder="0000" {...field} />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address.neighborhood"
-                  defaultValue={response.data?.user?.address?.neighborhood}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Bairro
-                      </FormLabel>
-                      <FormControl>
-                        <Input disabled placeholder="" {...field} />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  defaultValue={response.data?.user?.address?.complement}
-                  name="address.complement"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="data-[error=true]:text-destructive">
-                        Complemento
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled
-                          placeholder="Apartamento, bloco..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-right text-destructive" />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
               <div className="space-y-2">
                 <h3 className="text-md font-medium">Filiação</h3>

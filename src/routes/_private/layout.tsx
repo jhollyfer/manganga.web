@@ -2,9 +2,20 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Header } from "./-layout/header";
 import { Sidebar } from "./-layout/sidebar";
-
+interface SearchProps {
+  page?: string;
+  perPage?: string;
+  search?: string;
+}
 export const Route = createFileRoute("/_private")({
   component: RouteComponent,
+  validateSearch: (params: SearchProps) => {
+    return {
+      page: Number(params.page ?? 1),
+      perPage: Number(params?.perPage ?? 50),
+      search: params?.search,
+    };
+  },
 });
 
 function RouteComponent() {

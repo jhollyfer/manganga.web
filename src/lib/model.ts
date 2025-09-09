@@ -22,17 +22,8 @@ export interface User extends Base {
   name: string;
   email: string;
   password: string | null;
-  address: Address | null;
   responsible: Responsible | null;
   role: string;
-}
-
-export interface Address extends Base {
-  street: string | null;
-  number: string | null;
-  complement: string | null;
-  neighborhood: string | null;
-  userId: User["id"];
 }
 
 export interface Responsible extends Base {
@@ -42,8 +33,7 @@ export interface Responsible extends Base {
 }
 
 export interface Member extends Base {
-  cpf: string | null;
-  rg: string;
+  document: string;
   birthDate: string;
   extras: string | null;
   registeredById: User["id"];

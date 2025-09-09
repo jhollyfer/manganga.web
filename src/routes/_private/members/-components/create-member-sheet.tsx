@@ -26,7 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { API } from "@/lib/api";
 import { Formatter } from "@/lib/formatter";
-import type { Address, Member, Responsible } from "@/lib/model";
+import type { Member, Responsible } from "@/lib/model";
 import { cn } from "@/lib/utils";
 import { QueryClient } from "@/query-client";
 import { useMutation } from "@tanstack/react-query";
@@ -39,15 +39,10 @@ import { toast } from "sonner";
 
 interface Payload {
   name: string;
-  cpf: string | null;
-  rg: string;
+  document: string;
   birthDate: string;
   role: string;
   extras: string | null;
-  address: Pick<
-    Address,
-    "street" | "number" | "complement" | "neighborhood"
-  > | null;
   responsible: Pick<Responsible, "mother" | "father">;
 }
 
@@ -121,16 +116,9 @@ export function CreateMemberSheet() {
   const onSubmit = form.handleSubmit(function (payload) {
     create.mutateAsync({
       ...payload,
-      cpf: payload.cpf ? Formatter.number(payload.cpf) : null,
-      rg: Formatter.number(payload.rg),
+      document: Formatter.number(payload.document),
       birthDate: String(payload.birthDate)?.split("/").reverse().join("-"),
       extras: payload.extras || null,
-      // address: {
-      //   ...payload.address,
-      //   number: payload.address.number || null,
-      //   complement: payload.address.complement || null,
-      // },
-      address: null,
       responsible: {
         ...payload.responsible,
         father: payload.responsible.father || null,
@@ -189,17 +177,17 @@ export function CreateMemberSheet() {
 
             <FormField
               control={form.control}
-              name="rg"
+              name="document"
               rules={{
                 validate: (value) => {
-                  if (!value) return "RG é obrigatório";
+                  if (!value) return "Documento é obrigatório";
                   return true;
                 },
               }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="data-[error=true]:text-destructive">
-                    RG
+                    RG/CPF
                     <span className="text-destructive/80">
                       (obrigatório, somente números)
                     </span>

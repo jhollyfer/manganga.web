@@ -2,18 +2,15 @@
 // import { ThemeToggle } from "@/components/theme-toggle";
 import { InputSearch } from "@/components/input-search";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useLocation } from "@tanstack/react-router";
 // import { useLocation } from "react-router";
 // import { Profile } from "./profile";
 
 export function Header() {
-  // const location = useLocation();
+  const location = useLocation();
 
-  const rotasSemPesquisa = [
-    "/dashboard",
-    "/configuracoes-do-sistema",
-    "/perfil",
-    "/alterar-senha",
-  ];
+  console.log(location);
+  const rotasSemPesquisa = ["/dashboard"];
 
   const exibirPesquisa = !rotasSemPesquisa.some(
     (rota) => location.pathname === rota || location.pathname.endsWith(rota)

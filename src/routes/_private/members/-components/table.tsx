@@ -49,8 +49,7 @@ export function Table({ data, headers }: Props): React.ReactElement {
         {data.map((row) => (
           <TableRow key={row.id}>
             <TableCell>{row.user?.name}</TableCell>
-            <TableCell>{row.cpf ?? "Não informado"}</TableCell>
-            <TableCell>{row.rg ?? "Não informado"}</TableCell>
+            <TableCell>{row.document ?? "Não informado"}</TableCell>
             <TableCell>
               <Badge variant="outline">
                 {RoleMapper[row.user?.role as keyof typeof RoleMapper] ??
