@@ -1,48 +1,50 @@
 import heroImage from "@/assets/hero-festival.jpg";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="inicio" className="relative min-h-screen flex items-end overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Festival Folclórico Benjaminense"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/30" />
+      <img
+        src={heroImage}
+        alt="Festival Folclórico Benjaminense"
+        className="absolute inset-0 w-full h-full object-cover"
+        fetchPriority="high"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+      {/* Content - bottom left aligned */}
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 pb-24 md:pb-32 max-w-5xl">
+        <p className="text-sm uppercase tracking-widest text-white/70 mb-4">
+          Festival Folclórico Benjaminense
+        </p>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
+          Boi Bumbá
+          <br />
+          Mangangá
+        </h1>
+        <p className="text-lg md:text-xl text-white/80 max-w-xl mb-8 leading-relaxed">
+          Mais de 30 anos celebrando a cultura amazônica. O maior campeão do
+          Festival Folclórico de Benjamin Constant.
+        </p>
+        <Button
+          size="lg"
+          className="cursor-pointer text-lg px-8"
+          asChild
+        >
+          <a href="#about">Conheça Nossa História</a>
+        </Button>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        <div className="">
-          <h1 className=" text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6">
-            Conheça o Besouro
-          </h1>
-          <h2 className=" text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-8">
-            Benjaminense
-          </h2>
-        </div>
-
-        <div className="space-y-6 animate-fade-in">
-          <div className="bg-primary backdrop-blur-sm rounded-2xl p-6 mx-auto max-w-3xl">
-            <p className="text-xl md:text-2xl text-primary-foreground font-medium">
-              +30 Anos de Tradição Cultural Amazônica
-            </p>
-            <p className="text-lg text-primary-foreground mt-2">
-              A Capital Cultural do Alto Solimões te convida para a maior festa
-              folclórica da região
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            {/* <JoinSheet /> */}
-            <Button size="lg" variant="outline" className=" text-lg px-8 py-4">
-              Conheça Nossa História
-            </Button>
-          </div>
-        </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+        <a href="#festival" aria-label="Rolar para próxima seção" className="cursor-pointer">
+          <ChevronDown
+            className="h-8 w-8 text-white/60 animate-bounce"
+            aria-hidden="true"
+          />
+        </a>
       </div>
     </section>
   );

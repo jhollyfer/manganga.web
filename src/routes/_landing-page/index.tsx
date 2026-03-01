@@ -4,6 +4,7 @@ import { Festival } from "./-components/festival";
 import { Footer } from "./-components/footer";
 import { Hero } from "./-components/hero";
 import { Join } from "./-components/join";
+import { Navbar } from "./-components/navbar";
 
 export const Route = createFileRoute("/_landing-page/")({
   component: RouteComponent,
@@ -11,12 +12,15 @@ export const Route = createFileRoute("/_landing-page/")({
 
 function RouteComponent() {
   return (
-    <main className="min-h-screen">
-      <Hero />
-      <Festival />
-      <About />
-      <Join />
-      <Footer />
-    </main>
+    <>
+      <Navbar />
+      <main className="min-h-screen">
+        <Hero />
+        <Festival />
+        <About />
+        <Join />
+        <Footer />
+      </main>
+    </>
   );
 }
